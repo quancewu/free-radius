@@ -146,6 +146,6 @@ MacOS and iOS can only be connected through the Apple Configurator 2 description
 https://apps.apple.com/tw/app/apple-configurator-2/id1037126344?mt=12
 
 When connecting to Android, please select
-TTLS && PAP
+TTLS & PAP
 
 # radius
