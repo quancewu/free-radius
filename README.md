@@ -4,34 +4,33 @@ Build image
 docker compose build --no-cache
 </pre>
 
-產生自簽憑證
+Generate self-signed Certificate
 <pre>
 openssl req -x509 \
 -subj '/C=TW/ST=Taiwan/L=Panchiao/CN=ccc.tc' \
 -nodes -newkey rsa:2048 -keyout server.key -out server.crt -days 3650
 </pre>
 
-由build好的image(目錄名稱_服務名稱)，取得預設的設定檔
+Get default setting from built image(service_hostname)
 <pre>
 ./getconfig.sh radius_radius
 </pre>
 
-啟動
+Start up
 <pre>
 docker-compose up -d
 </pre>
 
-建立radius資料庫(密碼可自行調整)
+Build radius database(password depend-on your-self)
 <pre>
 docker compose exec db mysql -h db -e "create database radius"
 docker compose exec db mysql -h db -e "grant all on radius.* to 'radius'@'%' identified by 'hlOTg2ZmNk'"
 </pre>
 
-進入radius容器
+attach to radius container shell
 <pre>
 docker compose exec radius bash
 </pre>
-
 
 Check connection in mariadb is correct
 -u<username> -p<password>
@@ -50,18 +49,25 @@ Oneline script
 mysql -uradius -phlOTg2ZmNk -h db radius < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql
 </pre>
 
-產生測試用使用者的語法，電腦需有PHP。
+Generate user/password php versoin
 <pre>
 ./adduser.php devin test
 INSERT into radius.radcheck (username,attribute,op,value) values("devin", "Crypt-Password", ":=", "$2y$10$TYKwxeU/RQ3B0l0oL4M1Eu7h8siL9b0qYltiGmmte3LjWnOrmDE/W");
 </pre>
 
-進入mysql將insert語法貼上。
+Generate user/password python3 versoin
+<pre>
+python3 adduser.py -u devin -p test
+Username: devin | password: test
+INSERT into radius.radcheck (username,attribute,op,value) values("devin", "Crypt-Password", ":=", "$2y$12$6NrhpKTKmnryyO0aNPoaI.LAnqFX9Hf6dXXDcGAqgwXmls0NdLtz2");
+</pre>
+
+login to mysql and put sql insert to sql
 <pre>
 docker-compose exec db mysql
 </pre>
 
-以下提供相關attriubte說明，您可以透過程試產生不同的語法。
+The relevant attribute instructions are provided below, and you can generate different grammars through testing.
 
 <pre>
  Header	    Attribute		Description
@@ -93,7 +99,7 @@ docker-compose exec db mysql
        {X- orclntv} NT-Password 	Windows NT hashed passwords
 </pre>
 
-修改clients.conf，例如:(secret可以修改，Wifi AP連線時使用相同的secret)
+Modify clients.conf, for example: (secret can be modified, use the same secret when Wifi AP connects)
 <pre>
 client wifi {
 	ipaddr = *
@@ -101,8 +107,8 @@ client wifi {
 }
 </pre>
 
-修改sql檔，後端使用mysql資料庫連線。
-因為在容器內連接，所以這裡應該不需要加密了。
+Modify the sql file, and use the mysql database connection at the back end.
+Because the connection is inside the container, there should be no need for encryption here.
 <pre>
 dialect = "mysql"
 driver = "rlm_sql_${dialect}"
@@ -125,21 +131,21 @@ password = "hlOTg2ZmNk"
 </pre>
 
 
-重啟容器使用參數--remove-orphans在啟動時看起來較沒問題。
+Restarting the container with the argument --remove-orphans seems to be fine at startup.
 <pre>
 docker-compose down --remove-orphans
 docker-compose up -d
 </pre>
 
-查看log可用
+Tail radius logs
 <pre>
 docker compose logs -f radius
 </pre>
 
-MacOS及iOS需透過Apple Configurator2描速檔才可以連到。
+MacOS and iOS can only be connected through the Apple Configurator 2 description file.
 https://apps.apple.com/tw/app/apple-configurator-2/id1037126344?mt=12
 
-Android連結，時請選擇
-TTLS及PAP
+When connecting to Android, please select
+TTLS && PAP
 
 # radius

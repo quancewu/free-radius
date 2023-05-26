@@ -1,5 +1,5 @@
 import argparse
-# import bcrypt
+
 from passlib.hash import bcrypt
 
 def hash_password(password):
@@ -7,22 +7,21 @@ def hash_password(password):
     return hash_pwd
 
 
+def generate_sql_cmd(uname, pwd):
+    print(f"Username: {uname} | password: {pwd}")
+    passwd = f"{pwd}".encode()
+    hash_pwd = hash_password(args.pwd)
+    print(f'INSERT into radius.radcheck (username,attribute,op,value) values("{uname}", "Crypt-Password", ":=", "{hash_pwd}");')
+
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="TE Gateway Config Tool [TECT]")
-    # parser.add_argument('--product_id', dest='product_id', type=str, help='Add product_id')
+    parser = argparse.ArgumentParser(description="simple tools for generate hash password for radius server db")
     parser.add_argument('-u', '--username', dest='uname', type=str, help='username')
     parser.add_argument('-p', '--password', dest='pwd', type=str, help='Password')
     args = parser.parse_args()
-    print(args.uname, args.pwd)
-    passwd = f"{args.pwd}".encode()
+    if (args.uname is None) & (args.pwd is None):
+        print("parameter -u -p not found")
+    else:
+        generate_sql_cmd(args.uname, args.pwd)
 
-    hash_pwd = hash_password(args.pwd)
-    print(hash_pwd)
-    print(f'INSERT into radius.radcheck (username,attribute,op,value) values("{args.uname}", "Crypt-Password", ":=", "{hash_pwd}");')
-    # hashed = bcrypt.hashpw(passwd, salt)
-    # print(hashed)
-    # if bcrypt.checkpw(passwd, hashed):
-    #     print("match")
-    # else:
-    #     print("does not match")
         
