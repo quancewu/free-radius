@@ -1,7 +1,7 @@
 # radius
-建立image
+Build image
 <pre>
-docker-compose build --no-cache
+docker compose build --no-cache
 </pre>
 
 產生自簽憑證
@@ -23,26 +23,29 @@ docker-compose up -d
 
 建立radius資料庫(密碼可自行調整)
 <pre>
-docker-compose exec db mysql -h db -e "create database radius"
-docker-compose exec db mysql -h db -e "grant all on radius.* to 'radius'@'%' identified by 'hlOTg2ZmNk'"
+docker compose exec db mysql -h db -e "create database radius"
+docker compose exec db mysql -h db -e "grant all on radius.* to 'radius'@'%' identified by 'hlOTg2ZmNk'"
 </pre>
 
 進入radius容器
 <pre>
-docker-compose exec radius bash
+docker compose exec radius bash
 </pre>
 
-驗證資料庫連線是正常的的(-p後是資料庫的密碼)
+
+Check connection in mariadb is correct
+-u<username> -p<password>
+
 <pre>
 mysql -uradius -phlOTg2ZmNk -h db
 </pre>
 
-補上如下字串，建立schema
+input schema for default radius sql tables
 <pre>
 radius < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql
 </pre>
 
-完整如下
+Oneline script
 <pre>
 mysql -uradius -phlOTg2ZmNk -h db radius < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql
 </pre>
@@ -130,7 +133,7 @@ docker-compose up -d
 
 查看log可用
 <pre>
-docker-compose logs -f radius
+docker compose logs -f radius
 </pre>
 
 MacOS及iOS需透過Apple Configurator2描速檔才可以連到。
