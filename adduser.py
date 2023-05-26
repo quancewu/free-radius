@@ -2,6 +2,7 @@ import argparse
 
 from passlib.hash import bcrypt
 
+
 def hash_password(password):
     hash_pwd = bcrypt.using(rounds=12, ident="2y").hash(args.pwd)
     return hash_pwd
