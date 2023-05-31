@@ -17,7 +17,7 @@ def generate_sql_cmd(uname, pwd):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="simple tools for generate hash password for radius server db")
-    parser.add_argument('-u', '--username', dest='uname', type=str, help='username')
+    parser.add_argument('-u', '--username', dest='uname', type=str, help='Username')
     parser.add_argument('-p', '--password', dest='pwd', type=str, help='Password')
     args = parser.parse_args()
     if (args.uname is None) & (args.pwd is None):

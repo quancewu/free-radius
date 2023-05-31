@@ -6,6 +6,7 @@ services:
   depends_on:
     - db
   dns: 8.8.8.8
+  restart: always
   ports:
     - "1812:1812/udp"
     - "1813:1813/udp"
@@ -30,6 +31,7 @@ services:
  db:
   image: mariadb:10.5.5
   hostname: db
+  restart: always
   volumes:
     - ./data:/var/lib/mysql
   environment:

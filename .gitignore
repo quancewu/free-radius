@@ -8,3 +8,4 @@ clients.conf
 server.crt
 server.key
 text.txt
+unit_test/*
