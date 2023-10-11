@@ -117,7 +117,7 @@ server = "db"
 port = 3306
 login = "radius"
 password = "hlOTg2ZmNk"
-#註解掉TLS
+# TLS
 #	tls {
 #		ca_file = "/etc/ssl/certs/my_ca.crt"
 #		ca_path = "/etc/ssl/certs/"
