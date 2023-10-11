@@ -14,6 +14,7 @@ services:
     - ./radiusd.conf:/etc/freeradius/3.0/radiusd.conf
     - ./sql:/etc/freeradius/3.0/mods-enabled/sql
     - ./eap:/etc/freeradius/3.0/mods-enabled/eap
+    - ./mschap:/etc/freeradius/3.0/mods-enabled/mschap
     - ./default:/etc/freeradius/3.0/sites-available/default
     - ./inner-tunnel:/etc/freeradius/3.0/sites-available/inner-tunnel
     - ./clients.conf:/etc/freeradius/3.0/clients.conf

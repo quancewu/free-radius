@@ -16,7 +16,7 @@ authorize {
 		ok = return
 	}
 	files
-	sql
+	-sql
 	-ldap
 	expiration
 	logintime
